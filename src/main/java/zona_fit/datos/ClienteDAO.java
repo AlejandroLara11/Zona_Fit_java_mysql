@@ -72,6 +72,26 @@ public class ClienteDAO implements IClienteDAO{
 
     @Override
     public boolean insertClient(Client client) {
+        PreparedStatement ps;
+        var conect = Conect.getConect();
+        var query = "INSERT INTO client(name, last_name, membership) " + "VALUES (?, ?, ?)";
+        try {
+            ps = conect.prepareStatement(query);
+            ps.setString(1, client.getName());
+            ps.setString(2, client.getLastName());
+            ps.setInt(3, client.getMembership());
+            ps.execute();
+            return true;
+        }catch (Exception e){
+            System.out.println("Unexpected error while inserting client: " + e.getMessage());
+        }
+        finally{
+            try{
+                conect.close();
+            }catch (Exception e){
+                System.out.println("Unexpected error while closing connection: " + e.getMessage());
+            }
+        }
         return false;
     }
 
@@ -89,19 +109,28 @@ public class ClienteDAO implements IClienteDAO{
 
         IClienteDAO clienteDAO = new ClienteDAO();
 
-//      //Listar clientes
-//        System.out.println("*** LISTAR CLIENTES ***");
-//        var clients = clienteDAO.clientList();
-//        clients.forEach(System.out::println);
         //Buscar por ID
-        var client1 = new Client(1);
-        System.out.println("Client before search: \n" + client1);
-        var founded = clienteDAO.searchClientId(client1);
-        if (founded) {
-            System.out.println("Client found: \n" + client1);
+//        var client1 = new Client(1);
+//        System.out.println("Client before search: \n" + client1);
+//        var founded = clienteDAO.searchClientId(client1);
+//        if (founded) {
+//            System.out.println("Client found: \n" + client1);
+//        }else {
+//            System.out.println("Client not found: \n" + client1.getId());
+//        }
+
+        var NewClient = new Client("Daniel", "Ortiz", 102);
+        var added =  clienteDAO.insertClient(NewClient);
+        if(added){
+            System.out.println("Insert client successful: \n" + NewClient);
         }else {
-            System.out.println("Client not found: \n" + client1.getId());
+            System.out.println("Insert client failed... ");
         }
+        //Listar clientes
+        System.out.println("*** LISTAR CLIENTES ***");
+        var clients = clienteDAO.clientList();
+        clients.forEach(System.out::println);
+
         }
 
     }
