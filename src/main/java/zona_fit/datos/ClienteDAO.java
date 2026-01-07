@@ -24,7 +24,7 @@ public class ClienteDAO implements IClienteDAO{
                 var client = new Client();
                 client.setId(rs.getInt("id"));
                 client.setName(rs.getString("name"));
-                client.setLastName(rs.getString("lastName"));
+                client.setLastName(rs.getString("last_name"));
                 client.setMembership(rs.getInt("membership"));
                 clients.add(client);
             }
@@ -43,6 +43,30 @@ public class ClienteDAO implements IClienteDAO{
 
     @Override
     public boolean searchClientId(Client client) {
+        PreparedStatement ps;
+        ResultSet rs;
+        var conect = Conect.getConect();
+        var query = "SELECT * FROM CLIENT WHERE id = ?";
+        try{
+            ps = conect.prepareStatement(query);
+            ps.setInt(1, client.getId());
+            rs = ps.executeQuery();
+            if(rs.next()){
+                client.setName(rs.getString("name"));
+                client.setLastName(rs.getString("last_name"));
+                client.setMembership(rs.getInt("membership"));
+                return true;
+            }
+        }catch (Exception e){
+            System.out.println("Unexpected error while searching client by id" + e.getMessage());
+        }
+        finally {
+            try {
+                conect.close();
+            } catch (Exception e) {
+                System.out.println("Unexpected error while closing connection" + e.getMessage());
+            }
+        }
         return false;
     }
 
@@ -60,4 +84,24 @@ public class ClienteDAO implements IClienteDAO{
     public boolean deleteClient(Client client) {
         return false;
     }
-}
+
+    public static void main(String[] args) {
+
+        IClienteDAO clienteDAO = new ClienteDAO();
+
+//      //Listar clientes
+//        System.out.println("*** LISTAR CLIENTES ***");
+//        var clients = clienteDAO.clientList();
+//        clients.forEach(System.out::println);
+        //Buscar por ID
+        var client1 = new Client(1);
+        System.out.println("Client before search: \n" + client1);
+        var founded = clienteDAO.searchClientId(client1);
+        if (founded) {
+            System.out.println("Client found: \n" + client1);
+        }else {
+            System.out.println("Client not found: \n" + client1.getId());
+        }
+        }
+
+    }

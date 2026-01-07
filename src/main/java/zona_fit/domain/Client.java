@@ -63,7 +63,7 @@ public class Client {
                 "\nId: " + this.id +
                 "\nName: " + this.name +
                 "\nLastName: " + this.lastName +
-                "\nMembership: " + this.membership;
+                "\nMembership: " + this.membership + "\n";
     }
 
     @Override
