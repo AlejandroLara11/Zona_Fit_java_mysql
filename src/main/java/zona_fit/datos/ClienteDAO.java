@@ -97,6 +97,28 @@ public class ClienteDAO implements IClienteDAO{
 
     @Override
     public boolean updateClient(Client client) {
+        PreparedStatement ps;
+        ResultSet rs;
+        Connection conect = Conect.getConect();
+        var query = "UPDATE client SET name=?, last_name=?, membership=? " + " WHERE id=? ";
+        try {
+            ps = conect.prepareStatement(query);
+            ps.setString(1, client.getName());
+            ps.setString(2, client.getLastName());
+            ps.setInt(3, client.getMembership());
+            ps.setInt(4, client.getId());
+            ps.execute();
+            return true;
+
+        }catch (Exception e){
+            System.out.println("Unexpected error while updating client: " + e.getMessage());
+        }finally{
+            try {
+                conect.close();
+            }catch (Exception e){
+                System.out.println("Unexpected error while closing connection: " + e.getMessage());
+            }
+        }
         return false;
     }
 
@@ -119,13 +141,24 @@ public class ClienteDAO implements IClienteDAO{
 //            System.out.println("Client not found: \n" + client1.getId());
 //        }
 
-        var NewClient = new Client("Daniel", "Ortiz", 102);
-        var added =  clienteDAO.insertClient(NewClient);
-        if(added){
-            System.out.println("Insert client successful: \n" + NewClient);
-        }else {
-            System.out.println("Insert client failed... ");
+//        var NewClient = new Client("Daniel", "Ortiz", 102);
+//        var added =  clienteDAO.insertClient(NewClient);
+//        if(added){
+//            System.out.println("Insert client successful: \n" + NewClient);
+//        }else {
+//            System.out.println("Insert client failed... ");
+//        }
+
+        //Actualizar cliente
+        var clientUpdate = new Client(3, "Daniel Alejandro", "Lara", 107);
+        var modified = clienteDAO.updateClient(clientUpdate);
+        if(modified){
+            System.out.println("Client updated successfully: " + clientUpdate);
         }
+        else {
+            System.out.println("Client not updated successfully: " + clientUpdate);
+        }
+
         //Listar clientes
         System.out.println("*** LISTAR CLIENTES ***");
         var clients = clienteDAO.clientList();
