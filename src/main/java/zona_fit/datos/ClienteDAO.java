@@ -124,6 +124,24 @@ public class ClienteDAO implements IClienteDAO{
 
     @Override
     public boolean deleteClient(Client client) {
+        PreparedStatement ps;
+        var queryDelete = "DELETE FROM client WHERE id = ?";
+        Connection conect = Conect.getConect();
+        try {
+        ps = conect.prepareStatement(queryDelete);
+        ps.setInt(1, client.getId());
+        ps.execute();
+        return true;
+        }catch (Exception e){
+            System.out.println("Unexpected error while deleting client: " + e.getMessage());
+        }
+        finally{
+            try {
+                conect.close();
+            }catch (Exception e){
+                System.out.println("Unexpected error while closing connection: " + e.getMessage());
+            }
+        }
         return false;
     }
 
@@ -150,20 +168,28 @@ public class ClienteDAO implements IClienteDAO{
 //        }
 
         //Actualizar cliente
-        var clientUpdate = new Client(3, "Daniel Alejandro", "Lara", 107);
-        var modified = clienteDAO.updateClient(clientUpdate);
-        if(modified){
-            System.out.println("Client updated successfully: " + clientUpdate);
+//        var clientUpdate = new Client(3, "Daniel Alejandro", "Lara", 107);
+//        var modified = clienteDAO.updateClient(clientUpdate);
+//        if(modified){
+//            System.out.println("Client updated successfully: " + clientUpdate);
+//        }
+//        else {
+//            System.out.println("Client not updated successfully: " + clientUpdate);
+//        }
+
+        //EliminarCliente
+        var clientDel = new Client(1);
+        var deleted = clienteDAO.deleteClient(clientDel);
+        if (deleted){
+            System.out.println("Client deleted successfully: " + clientDel);
+        }else {
+            System.out.println("Failed to delete client: " + clientDel);
         }
-        else {
-            System.out.println("Client not updated successfully: " + clientUpdate);
-        }
+
 
         //Listar clientes
         System.out.println("*** LISTAR CLIENTES ***");
         var clients = clienteDAO.clientList();
         clients.forEach(System.out::println);
-
         }
-
     }
