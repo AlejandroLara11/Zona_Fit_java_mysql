@@ -48,7 +48,16 @@ public class ZonaFitApp {
                 var clients = new ClienteDAO().clientList();
                 clients.forEach(System.out::println);
                 break;
-
+            case 2: //Search
+                System.out.println("Insert id to search for: ");
+                var search = Integer.parseInt(sc.nextLine());
+                var client = new Client(search);
+                boolean founded = clienteDao.searchClientId(client);
+                if (founded) {
+                    System.out.println("Client founded! \n" + client);
+                }else  {
+                    System.out.println("Client id = " + search + " not founded!");
+                }
         }
         return exit;
     }
