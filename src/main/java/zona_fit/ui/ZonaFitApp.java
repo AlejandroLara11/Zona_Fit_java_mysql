@@ -39,4 +39,18 @@ public class ZonaFitApp {
         return Integer.parseInt(sc.nextLine());
     }
 
+
+    private static boolean executeOption(int option, Scanner sc, IClienteDAO clienteDao) {
+        var exit = false;
+        switch (option) {
+            case 1: //List Clientes
+                System.out.println("\nClients list\n");
+                var clients = new ClienteDAO().clientList();
+                clients.forEach(System.out::println);
+                break;
+
+        }
+        return exit;
+    }
+
 }
