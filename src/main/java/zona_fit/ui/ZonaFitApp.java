@@ -58,8 +58,30 @@ public class ZonaFitApp {
                 }else  {
                     System.out.println("Client id = " + search + " not founded!");
                 }
+                break;
+            case 3: //Add
+                System.out.println("Add client");
+                System.out.println("Insert client name: ");
+                String name = sc.nextLine();
+                System.out.println("Insert client last name: ");
+                String lastName = sc.nextLine();
+                System.out.println("Insert client membership: ");
+                int membership = Integer.parseInt(sc.nextLine());
+                boolean inserted = clienteDao.insertClient(new Client(name, lastName, membership));
+                if (inserted) {
+                    System.out.println("Client inserted!");
+                }else {
+                    System.out.println("Client not inserted!");
+                }
+                System.out.println("***Clients List***");
+                var clientList = clienteDao.clientList();
+                clientList.forEach(System.out::println);
+                break;
+            case 4: //update
+
         }
         return exit;
+
     }
 
 }
