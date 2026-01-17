@@ -104,6 +104,12 @@ public class ZonaFitApp {
                     System.out.println("Client not deleted!");
                 }
                 break;
+            case 6: //exit
+                System.out.println("THANKS FOR UR VISIT...");
+                exit = true;
+                break;
+            default:
+                System.out.println("Invalid option, try again...");
         }
         return exit;
     }
