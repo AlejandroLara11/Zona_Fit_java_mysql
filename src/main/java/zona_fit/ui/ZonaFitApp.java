@@ -94,6 +94,16 @@ public class ZonaFitApp {
                     System.out.println("Client not updated!");
                 }
                 break;
+            case 5: //delete
+                System.out.println("Insert client id to delete: ");
+                var clientDel = new Client(Integer.parseInt(sc.nextLine()));
+                var deleted = clienteDao.deleteClient(clientDel);
+                if (deleted) {
+                    System.out.println("Client deleted: " +  clientDel);
+                } else {
+                    System.out.println("Client not deleted!");
+                }
+                break;
         }
         return exit;
     }
