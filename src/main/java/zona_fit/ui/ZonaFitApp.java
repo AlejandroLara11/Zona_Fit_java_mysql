@@ -55,7 +55,7 @@ public class ZonaFitApp {
                 boolean founded = clienteDao.searchClientId(client);
                 if (founded) {
                     System.out.println("Client founded! \n" + client);
-                }else  {
+                } else {
                     System.out.println("Client id = " + search + " not founded!");
                 }
                 break;
@@ -70,18 +70,31 @@ public class ZonaFitApp {
                 boolean inserted = clienteDao.insertClient(new Client(name, lastName, membership));
                 if (inserted) {
                     System.out.println("Client inserted!");
-                }else {
+                } else {
                     System.out.println("Client not inserted!");
                 }
                 System.out.println("***Clients List***");
-                var clientList = clienteDao.clientList();
-                clientList.forEach(System.out::println);
+                clients = clienteDao.clientList();
+                clients.forEach(System.out::println);
                 break;
             case 4: //update
-
+                System.out.println("Insert client id to modify: ");
+                int id = Integer.parseInt(sc.nextLine());
+                System.out.println("Insert new client name: ");
+                String nameU = sc.nextLine();
+                System.out.println("Insert new client last name: ");
+                String lastNameU = sc.nextLine();
+                System.out.println("Insert new client membership: ");
+                int membershipU = Integer.parseInt(sc.nextLine());
+                var clientUpdated = new Client(id, nameU, lastNameU, membershipU);
+                var updated = clienteDao.updateClient(clientUpdated);
+                if (updated) {
+                    System.out.println("Client succesfully updated : " + clientUpdated);
+                } else {
+                    System.out.println("Client not updated!");
+                }
+                break;
         }
         return exit;
-
     }
-
 }
